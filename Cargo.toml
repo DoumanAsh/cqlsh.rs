@@ -1,0 +1,10 @@
+[package]
+name = "cqlsh"
+version = "0.1.0"
+authors = ["Douman <douman@gmx.se>"]
+edition = "2018"
+
+[dependencies]
+cdrs = "2"
+arg = "0.2"
+c-ffi = { version = "0.2", default-features = false }

@@ -48,8 +48,8 @@ unsafe extern "C" fn main(argc: isize, argv: *const *const u8) -> isize {
             }
         };
 
-        for line in file.lines() {
-            let line = match line {
+        for line in file.split(b';') {
+            let mut line = match line {
                 Ok(line) => line,
                 Err(error) => {
                     eprintln!("Error reading file: {}", error);
@@ -57,7 +57,22 @@ unsafe extern "C" fn main(argc: isize, argv: *const *const u8) -> isize {
                 }
             };
 
-            if !shell.execute(&line) {
+            for byte in line.iter_mut() {
+                match byte {
+                    b'\r' | b'\n' => *byte = b' ',
+                    _ => (),
+                }
+            }
+
+            let line = match String::from_utf8(line) {
+                Ok(line) => line,
+                Err(error) => {
+                    eprintln!("Error reading file: {}", error);
+                    return FAIL_CODE;
+                },
+            };
+
+            if !shell.execute(line.trim()) {
                 result = FAIL_CODE
             }
         }

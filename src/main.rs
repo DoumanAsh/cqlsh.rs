@@ -72,7 +72,8 @@ unsafe extern "C" fn main(argc: isize, argv: *const *const u8) -> isize {
                 },
             };
 
-            if !shell.execute(line.trim()) {
+            let line = line.trim();
+            if line.len() > 0 && !shell.execute(line) {
                 result = FAIL_CODE
             }
         }

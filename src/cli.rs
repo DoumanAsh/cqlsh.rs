@@ -17,10 +17,6 @@ pub struct Cli {
     pub no_color: bool,
 
     #[arg(long)]
-    ///The browser to use to display CQL help
-    pub browser: Option<String>,
-
-    #[arg(long)]
     ///Use SSL
     pub ssl: bool,
 
@@ -43,6 +39,10 @@ pub struct Cli {
     #[arg(short, long)]
     ///Execute commands from FILE, then exit.
     pub file: Option<String>,
+
+    #[arg(long = "connection-timeout", default = "5")]
+    ///Specifies the connection timeout in seconds (default: 5 seconds).
+    pub connection_timeout: u64,
 
     ///Specifies database host, optionally can include port
     pub host: Option<String>,

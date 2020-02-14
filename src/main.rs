@@ -27,7 +27,7 @@ unsafe extern "C" fn main(argc: isize, argv: *const *const u8) -> isize {
 
     let auth = Auth::from_creds(args.username, args.password);
     let host = args.host.unwrap_or_else(|| DEFAULT_HOST.to_owned());
-    let shell = match shell::Shell::new(&host, auth) {
+    let shell = match shell::Shell::new(&host, auth, args.connection_timeout) {
         Ok(shell) => shell,
         Err(error) => {
             eprintln!("Unable to connect to {}. Error: {}", host, error);

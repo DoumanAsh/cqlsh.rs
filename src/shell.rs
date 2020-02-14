@@ -1,12 +1,15 @@
 use crate::auth::Auth;
 
+use core::time;
+
 pub struct Shell {
     session: cdrs::cluster::session::Session<cdrs::load_balancing::RoundRobin<cdrs::cluster::TcpConnectionPool<Auth>>>
 }
 
 impl Shell {
-    pub fn new(host: &str, auth: Auth) -> Result<Self, cdrs::error::Error> {
-        let node = cdrs::cluster::NodeTcpConfigBuilder::new(host, auth).build();
+    pub fn new(host: &str, auth: Auth, connection_timeout: u64) -> Result<Self, cdrs::error::Error> {
+        let timeout = time::Duration::from_secs(connection_timeout);
+        let node = cdrs::cluster::NodeTcpConfigBuilder::new(host, auth).connection_timeout(timeout).build();
         let config = cdrs::cluster::ClusterTcpConfig(vec![node]);
         let load_balancing = cdrs::load_balancing::RoundRobin::new();
         let session = cdrs::cluster::session::new(&config, load_balancing)?;

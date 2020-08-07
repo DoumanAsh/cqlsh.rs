@@ -40,7 +40,7 @@ pub struct Cli {
     ///Execute commands from FILE, then exit.
     pub file: Option<String>,
 
-    #[arg(long = "connection-timeout", default = "5")]
+    #[arg(long = "connection-timeout", default_value = "5")]
     ///Specifies the connection timeout in seconds (default: 5 seconds).
     pub connection_timeout: u64,
 
